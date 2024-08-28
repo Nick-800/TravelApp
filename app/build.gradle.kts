@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.todoapp"
+    namespace = "com.example.travelapp"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.todoapp"
+        applicationId = "com.example.travelapp"
         minSdk = 24
         targetSdk = 33
         versionCode = 1
@@ -51,6 +51,7 @@ android {
 
 dependencies {
     implementation("com.google.android.libraries.mapsplatform.transportation:transportation-consumer:2.3.0")
+    implementation("androidx.core:core-splashscreen:1.0.1")
     val nav_version = "2.7.7"
 
     implementation("androidx.core:core-ktx:1.13.1")
