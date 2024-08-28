@@ -1,5 +1,6 @@
 package com.example.travelapp.ui.theme.login
 
+import android.view.View
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
@@ -33,13 +34,14 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
+import com.example.travelapp.UserdataViewModel
 import com.example.travelapp.ui.theme.components.CustomText
 import com.example.travelapp.ui.theme.components.customFont
 import com.example.travelapp.ui.theme.routes.Routes
 
 @Composable
 fun StartUpPage(nav:NavController){
-
 
 
     MaterialTheme{

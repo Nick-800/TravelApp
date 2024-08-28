@@ -37,6 +37,7 @@ fun SignUpPage(nav: NavController, users: MutableList<Users>) {
     val email = remember { mutableStateOf("") }
     val username = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
+    val confirmPassword = remember { mutableStateOf("")}
 
     MaterialTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -65,9 +66,12 @@ fun SignUpPage(nav: NavController, users: MutableList<Users>) {
                     email = email.value,
                     username = username.value,
                     password = password.value,
+                    confirmPassword= confirmPassword.value,
                     onEmailChange = { email.value = it },
                     onUsernameChange = { username.value = it },
-                    onPasswordChange = { password.value = it }
+                    onPasswordChange = { password.value = it },
+                    onConfirmPasswordChange ={confirmPassword.value = it}
+
                 )
                 SignUpButton(
                     onClick = {
@@ -108,9 +112,11 @@ fun SignUpInputFields(
     email: String,
     username: String,
     password: String,
+    confirmPassword: String,
     onEmailChange: (String) -> Unit,
     onUsernameChange: (String) -> Unit,
-    onPasswordChange: (String) -> Unit
+    onPasswordChange: (String) -> Unit,
+    onConfirmPasswordChange: (String) -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -188,6 +194,66 @@ fun SignUpInputFields(
             ),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
         )
+
+        val confirmPasswordError = remember { mutableStateOf(false) }
+        val confirmPasswordErrorMessage = remember { mutableStateOf("") }
+
+        OutlinedTextField(
+            value = confirmPassword,
+            onValueChange = { newValue ->
+                onConfirmPasswordChange(newValue)
+                if (newValue != password) {
+                    confirmPasswordError.value = true
+                    confirmPasswordErrorMessage.value = "Passwords do not match"
+                } else {
+                    confirmPasswordError.value = false
+                    confirmPasswordErrorMessage.value = ""
+                }
+            },
+            label = { Text(text = "Confirm Password", style = TextStyle(
+                fontFamily = customFont,
+                fontStyle = FontStyle.Normal,
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp,
+                color = Color.Black
+            )) },
+            leadingIcon = { Icon(Icons.Default.Lock, contentDescription = "Confirm Password Icon") },
+            modifier = Modifier.fillMaxWidth(),
+            colors = if (confirmPasswordError.value) {
+                OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = Color.Red,
+                    unfocusedBorderColor = Color.Red,
+                    unfocusedLabelColor = Color.Red,
+                    focusedLabelColor = Color.Red,
+                    unfocusedLeadingIconColor = Color.Red,
+                    focusedLeadingIconColor = Color.Red
+                )
+            } else {
+                OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = Color(0xFF1A73E8),
+                    unfocusedBorderColor = Color(0xFF7A7A7A),
+                    unfocusedLabelColor = Color(0xFF7A7A7A),
+                    focusedLabelColor = Color(0xFF1A73E8),
+                    unfocusedLeadingIconColor = Color(0xFF7A7A7A),
+                    focusedLeadingIconColor = Color(0xFF1A73E8)
+                )
+            },
+            shape = MaterialTheme.shapes.medium
+        )
+
+        if (confirmPasswordError.value) {
+            Text(
+                text = confirmPasswordErrorMessage.value,
+                style = TextStyle(
+                    fontFamily = customFont,
+                    fontStyle = FontStyle.Normal,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 14.sp,
+                    color = Color.Red
+                ),
+                modifier = Modifier.padding(start = 16.dp)
+            )
+        }
 
     }
 }
