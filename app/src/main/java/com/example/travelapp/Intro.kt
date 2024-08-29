@@ -34,7 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-
+import com.example.travelapp.ui.theme.routes.Routes
 
 
 @Composable
@@ -52,10 +52,15 @@ fun IntroScreen(nav: NavController, username: String, avatarResource: Int) {
             PageData("Cultural Sites", "Discover Libya's rich heritage through its ancient ruins and cultural wonders.", R.drawable.cultural_sites)
         ),
         listOf(
-            PageData("Services", "Custom-tailored travel services with translators and tour guides to enhance your Libyan experience.", R.drawable.hotels),
-            PageData("Offers", "Exclusive deals and packages to explore Libya's vast attractions.", R.drawable.mountain),
-            PageData("Guides", "Expert guides and translators to enrich your journey across Libya.", R.drawable.adventure)
-        )
+            PageData("Services", "Custom-tailored travel services with translators and tour guides to enhance your Libyan experience.", R.drawable.service),
+            PageData("Offers", "Exclusive deals and packages to explore Libya's vast attractions.", R.drawable.offers),
+            PageData("Guides", "Expert guides and translators to enrich your journey across Libya.", R.drawable.guide)
+        ),
+                listOf(
+                PageData("Tickets", "Easily book your journey to explore the undiscovered treasures of Libya.", R.drawable.tickets),
+        PageData("Hotels", "Experience Libyan warmth with our carefully selected accommodations.", R.drawable.hotels),
+        PageData("Adventure", "Dive into extraordinary adventures across Libya's breathtaking landscapes.", R.drawable.adventure)
+    ),
     )
 
     Box(
@@ -70,6 +75,7 @@ fun IntroScreen(nav: NavController, username: String, avatarResource: Int) {
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxSize()
+
         ) {
             HeaderSection(username = username, avatarResource = avatarResource)
             Spacer(modifier = Modifier.height(16.dp))
@@ -164,7 +170,7 @@ fun NavigationControls(currentPage: Int, totalPages: Int, onPageChange: (Int) ->
             if (currentPage == totalPages - 1) {
                 Button(
                     onClick = {
-                        navController.navigate("home")
+                        navController.navigate(Routes.Home)
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Black)
                 ) {

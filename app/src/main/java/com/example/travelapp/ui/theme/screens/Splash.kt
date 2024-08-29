@@ -40,6 +40,8 @@ import com.example.travelapp.ui.theme.routes.Routes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+
+
 @Composable
 fun SplashScreen(navController: NavHostController) {
     var alpha by remember { mutableStateOf(1f) }

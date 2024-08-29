@@ -1,6 +1,8 @@
 package com.example.travelapp.ui.theme.login
 
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -18,27 +20,28 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.font.FontWeight
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.travelapp.R
 import com.example.travelapp.UserdataViewModel
 import com.example.travelapp.ui.theme.routes.Routes
-import com.example.travelapp.data.Users
 import com.example.travelapp.data.Userdata
 import com.example.travelapp.ui.theme.components.customFont
 
 
+
 @Composable
-fun SignUpPage(nav: NavController, userModel:UserdataViewModel = viewModel()) {
+fun SignUpPage(nav: NavController, userModel:UserdataViewModel) {
     val email = remember { mutableStateOf("") }
-    val username = remember { mutableStateOf("") }
+    val name = remember { mutableStateOf("") }
+    val secondname = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
     val confirmPassword = remember { mutableStateOf("")}
 
@@ -67,22 +70,22 @@ fun SignUpPage(nav: NavController, userModel:UserdataViewModel = viewModel()) {
                 SignUpHeader()
                 SignUpInputFields(
                     email = email.value,
-                    username = username.value,
+                    name = name.value,
+                    secondname=secondname.value,
                     password = password.value,
                     confirmPassword= confirmPassword.value,
                     onEmailChange = { email.value = it },
-                    onUsernameChange = { username.value = it },
+                    onNameChange = { name.value = it },
+                    onSecondNameChange = {secondname.value = it },
                     onPasswordChange = { password.value = it },
                     onConfirmPasswordChange ={confirmPassword.value = it}
 
                 )
                 SignUpButton(
                     onClick = {
-                        userModel.userdata.add(Userdata(id = 0, name = username.value,
-                            secondName = "Kamash", email = "blah@gmail.com",
-                            location = "Benghazi", phone = "0927441569"))
+                        userModel.addUser(Userdata(email = email.value, name = name.value, password = password.value))
                         nav.navigate(Routes.Login)
-                    }
+                    }, context = LocalContext.current
                 )
                 AlreadyHaveAccount(nav)
             }
@@ -115,11 +118,13 @@ fun SignUpHeader() {
 @Composable
 fun SignUpInputFields(
     email: String,
-    username: String,
+    name: String,
+    secondname:String,
     password: String,
     confirmPassword: String,
     onEmailChange: (String) -> Unit,
-    onUsernameChange: (String) -> Unit,
+    onNameChange: (String) -> Unit,
+    onSecondNameChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onConfirmPasswordChange: (String) -> Unit
 ) {
@@ -127,20 +132,23 @@ fun SignUpInputFields(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        Row (modifier = Modifier.fillMaxWidth(1f).padding(16.dp),
-            horizontalArrangement = Arrangement.Start){
+        Row (modifier = Modifier
+            .fillMaxWidth(1f)
+            .padding(8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween){
 
         OutlinedTextField(
-            value = username,
-            onValueChange = onUsernameChange,
-            label = { Text(text = "AAA", style = TextStyle(
+            value = name,
+            onValueChange = onNameChange,
+            label = { Text(text = "First Name", style = TextStyle(
                 fontFamily = customFont,
                 fontStyle = FontStyle.Normal,
                 fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
+                fontSize = 12.sp
             )) },
             leadingIcon = { Icon(Icons.Default.Person, contentDescription = "Username Icon") },
-            modifier = Modifier.fillMaxWidth(0.5f).padding(8.dp),
+            modifier = Modifier
+                .fillMaxWidth(0.5f),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Color(0xFF1A73E8),
                 unfocusedBorderColor = Color(0xFF7A7A7A),
@@ -149,23 +157,25 @@ fun SignUpInputFields(
                 unfocusedLeadingIconColor = Color(0xFF7A7A7A),
                 focusedLeadingIconColor = Color(0xFF1A73E8),
                 focusedTextColor = Color.Black,
+                unfocusedTextColor = Color.Black,
 
 
             ),
             shape = MaterialTheme.shapes.medium
         )
-
+            Spacer(modifier = Modifier.width(16.dp))
             OutlinedTextField(
-                value = username,
-                onValueChange = onUsernameChange,
-                label = { Text(text = "AAAA", style = TextStyle(
+                value = secondname,
+                onValueChange = onSecondNameChange,
+                label = { Text(text = "Last Name", style = TextStyle(
                     fontFamily = customFont,
                     fontStyle = FontStyle.Normal,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
+                    fontSize = 12.sp
                 )) },
                 leadingIcon = { Icon(Icons.Default.Person, contentDescription = "Username Icon") },
-                modifier = Modifier.fillMaxWidth(1f).padding(8.dp),
+                modifier = Modifier
+                    .fillMaxWidth(1f),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color(0xFF1A73E8),
                     unfocusedBorderColor = Color(0xFF7A7A7A),
@@ -174,6 +184,7 @@ fun SignUpInputFields(
                     unfocusedLeadingIconColor = Color(0xFF7A7A7A),
                     focusedLeadingIconColor = Color(0xFF1A73E8),
                     focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.Black,
 
 
                     ),
@@ -200,7 +211,8 @@ fun SignUpInputFields(
                 focusedLabelColor = Color(0xFF1A73E8),
                 unfocusedLeadingIconColor = Color(0xFF7A7A7A),
                 focusedLeadingIconColor = Color(0xFF1A73E8),
-                focusedTextColor = Color.Black
+                focusedTextColor = Color.Black,
+                unfocusedTextColor = Color.Black
 
             ),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
@@ -225,7 +237,8 @@ fun SignUpInputFields(
                 focusedLabelColor = Color(0xFF1A73E8),
                 unfocusedLeadingIconColor = Color(0xFF7A7A7A),
                 focusedLeadingIconColor = Color(0xFF1A73E8),
-                focusedTextColor = Color.Black
+                focusedTextColor = Color.Black,
+                unfocusedTextColor = Color.Black
 
             ),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
@@ -262,7 +275,8 @@ fun SignUpInputFields(
                     focusedLabelColor = Color.Red,
                     unfocusedLeadingIconColor = Color.Red,
                     focusedLeadingIconColor = Color.Red,
-                    focusedTextColor = Color.Red
+                    focusedTextColor = Color.Red,
+                    unfocusedTextColor = Color.Red
                 )
             } else {
                 OutlinedTextFieldDefaults.colors(
@@ -272,7 +286,8 @@ fun SignUpInputFields(
                     focusedLabelColor = Color(0xFF1A73E8),
                     unfocusedLeadingIconColor = Color(0xFF7A7A7A),
                     focusedLeadingIconColor = Color(0xFF1A73E8),
-                    focusedTextColor = Color.Black
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.Black
                 )
             },
             shape = MaterialTheme.shapes.medium,
@@ -297,9 +312,10 @@ fun SignUpInputFields(
 }
 
 @Composable
-fun SignUpButton(onClick: () -> Unit) {
+fun SignUpButton(onClick: () -> Unit, context: Context) {
     Button(
-        onClick = onClick,
+        onClick ={ onClick()}
+        ,
         modifier = Modifier.fillMaxWidth(),
         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF8EC3CC)),
         shape = MaterialTheme.shapes.medium,
@@ -339,3 +355,5 @@ fun AlreadyHaveAccount(nav: NavController) {
         }
     }
 }
+
+

@@ -20,14 +20,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.travelapp.R
+import com.example.travelapp.UserdataViewModel
 import com.example.travelapp.ui.theme.routes.Routes
 import com.example.travelapp.data.Users
 import com.example.travelapp.ui.theme.components.customFont
 
 @Composable
-fun LoginPage(nav: NavController, users: List<Users>) {
+fun LoginPage(nav: NavController, userModel: UserdataViewModel = viewModel()) {
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
     val showErrorDialog = remember { mutableStateOf(false) }
@@ -63,9 +65,14 @@ fun LoginPage(nav: NavController, users: List<Users>) {
                 )
                 Button(
                     onClick = {
-                        val userExists = users.firstOrNull { it.email == email.value && it.password == password.value }
+                        val userExists = userModel.userdata.firstOrNull { it.email == email.value && it.password == password.value }
+
                         if (userExists != null) {
-                            nav.navigate("home/${userExists.email}/${userExists.password}/${userExists.username}")
+if (userExists.email == "Admin@gmail.com" && userExists.password == "Admin")
+                            nav.navigate(Routes.Admin)
+                            else
+    nav.navigate(Routes.Home)
+
                         } else {
                             showErrorDialog.value = true
                         }
@@ -181,7 +188,8 @@ private fun InputField(email: String, password: String, onEmailChange: (String) 
                 focusedLabelColor = Color(0xFF1A73E8),
                 unfocusedLeadingIconColor = Color(0xFF6D6D6D),
                 focusedLeadingIconColor = Color(0xFF1A73E8),
-                focusedTextColor = Color.Black
+                focusedTextColor = Color.Black,
+                unfocusedTextColor = Color.Black
 
             ),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)

@@ -7,6 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -18,15 +19,18 @@ import com.example.travelapp.ui.theme.login.LoginPage
 import com.example.travelapp.ui.theme.login.SignUpPage
 import com.example.travelapp.ui.theme.login.StartUpPage
 import com.example.travelapp.ui.theme.routes.Routes
+import com.example.travelapp.ui.theme.screens.AdminScreen
+import com.example.travelapp.ui.theme.screens.HomeScreen
 import com.example.travelapp.ui.theme.screens.SplashScreen
+import com.example.travelapp.ui.theme.screens.TravelDetailsScreen
+import com.example.travelapp.ui.theme.screens.Travelcard
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             ToDoAppTheme {
-                val users = remember { mutableStateListOf<Users>() }
-
+val userModel:UserdataViewModel = viewModel()
 
                 val navController = rememberNavController()
 
@@ -41,12 +45,20 @@ class MainActivity : ComponentActivity() {
                         StartUpPage(nav = navController)
                     }
                     composable(Routes.Login) {
-                        LoginPage(nav = navController, users = users)
+                        LoginPage(nav = navController, userModel= userModel)
                     }
                     composable(Routes.Signup) {
-                        SignUpPage(nav = navController)
+                        SignUpPage(nav = navController, userModel= userModel)
                     }
-
+                    composable(Routes.Home){
+                        HomeScreen(username = "", email = "", password = "")
+                    }
+                    composable(Routes.Admin){
+                        AdminScreen()
+                    }
+                    composable(Routes.Travel){
+                        TravelDetailsScreen(travelcard = Travelcard(0,"","",0.0,""))
+                    }
                     composable("intro/{username}/{lastname}/{avatarResource}",
                         arguments = listOf(
                             navArgument("username") { defaultValue = "Guest" },
