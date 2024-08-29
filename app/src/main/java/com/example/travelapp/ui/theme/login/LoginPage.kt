@@ -166,8 +166,7 @@ private fun InputField(email: String, password: String, onEmailChange: (String) 
                     fontFamily = customFont,
                     fontStyle = FontStyle.Normal,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
-                    color = Color.Black
+                    fontSize = 16.sp
                 ))
                 //CustomText("Email", modifier = Modifier.fillMaxHeight(0.5f))
 
@@ -181,7 +180,8 @@ private fun InputField(email: String, password: String, onEmailChange: (String) 
                 unfocusedLabelColor = Color(0xFF6D6D6D),
                 focusedLabelColor = Color(0xFF1A73E8),
                 unfocusedLeadingIconColor = Color(0xFF6D6D6D),
-                focusedLeadingIconColor = Color(0xFF1A73E8)
+                focusedLeadingIconColor = Color(0xFF1A73E8),
+                focusedTextColor = Color.Black
 
             ),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
@@ -195,8 +195,7 @@ private fun InputField(email: String, password: String, onEmailChange: (String) 
                     fontFamily = customFont,
                     fontStyle = FontStyle.Normal,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
-                    color = Color.Black
+                    fontSize = 16.sp
                 ))
 //                CustomText("Password", fontWeight= FontWeight.Bold,
 //                modifier = Modifier.fillMaxHeight(0.5f)
@@ -211,7 +210,8 @@ private fun InputField(email: String, password: String, onEmailChange: (String) 
                 unfocusedLabelColor = Color(0xFF7A7A7A),
                 focusedLabelColor = Color(0xFF1A73E8),
                 unfocusedLeadingIconColor = Color(0xFF7A7A7A),
-                focusedLeadingIconColor = Color(0xFF1A73E8)
+                focusedLeadingIconColor = Color(0xFF1A73E8),
+                focusedTextColor = Color.Black
 
             ),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)

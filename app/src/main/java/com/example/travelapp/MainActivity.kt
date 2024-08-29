@@ -1,8 +1,7 @@
 package com.example.travelapp
 
 
-import HomeScreen
-import SettingsContent
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -19,6 +18,7 @@ import com.example.travelapp.ui.theme.login.LoginPage
 import com.example.travelapp.ui.theme.login.SignUpPage
 import com.example.travelapp.ui.theme.login.StartUpPage
 import com.example.travelapp.ui.theme.routes.Routes
+import com.example.travelapp.ui.theme.screens.SplashScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +31,12 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
 
 
-                NavHost(navController = navController, startDestination = Routes.StartUp) {
+
+
+                NavHost(navController = navController, startDestination = Routes.Splash) {
+                    composable(Routes.Splash){
+                        SplashScreen(navController = navController)
+                    }
                     composable(Routes.StartUp) {
                         StartUpPage(nav = navController)
                     }
@@ -39,7 +44,7 @@ class MainActivity : ComponentActivity() {
                         LoginPage(nav = navController, users = users)
                     }
                     composable(Routes.Signup) {
-                        SignUpPage(nav = navController, users = users)
+                        SignUpPage(nav = navController)
                     }
 
                     composable("intro/{username}/{lastname}/{avatarResource}",
@@ -54,23 +59,12 @@ class MainActivity : ComponentActivity() {
                         val avatarResource = backStackEntry.arguments?.getInt("avatarResource") ?: R.drawable.cultural_sites
                         IntroScreen(navController, "$username $lastname", avatarResource)
                     }
-                    composable(Routes.Home) { backStackEntry ->
-                        val email = backStackEntry.arguments?.getString("email") ?: ""
-                        val password = backStackEntry.arguments?.getString("password") ?: ""
-                        val username = backStackEntry.arguments?.getString("username") ?: ""
-                        HomeScreen(nav = navController, email = email, password = password, username = username)
-                    }
+
 //                    composable(Routes.Profile) { backStackEntry ->
 //                    val viewModel = backStackEntry.arguments?.
 //                    val pa = backStackEntry.arguments?.getString("p") ?: ""
 //                        ProfileContent(nav = navController, viewModel = viewModel, p = p)
 //                    }
-                    composable(Routes.Settings) { backStackEntry ->
-                        val email = backStackEntry.arguments?.getString("email") ?: ""
-                        val password = backStackEntry.arguments?.getString("password") ?: ""
-                        val username = backStackEntry.arguments?.getString("username") ?: ""
-                        SettingsContent(nav = navController, email = email, password = password, username = username)
-                    }
                 }
 
             }
@@ -78,7 +72,6 @@ class MainActivity : ComponentActivity() {
             }
     }
 }
-
 
 
 

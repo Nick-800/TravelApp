@@ -24,16 +24,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.font.FontWeight
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.travelapp.R
+import com.example.travelapp.UserdataViewModel
 import com.example.travelapp.ui.theme.routes.Routes
 import com.example.travelapp.data.Users
+import com.example.travelapp.data.Userdata
 import com.example.travelapp.ui.theme.components.customFont
 
 
 @Composable
-fun SignUpPage(nav: NavController, users: MutableList<Users>) {
+fun SignUpPage(nav: NavController, userModel:UserdataViewModel = viewModel()) {
     val email = remember { mutableStateOf("") }
     val username = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
@@ -75,7 +78,9 @@ fun SignUpPage(nav: NavController, users: MutableList<Users>) {
                 )
                 SignUpButton(
                     onClick = {
-                        users.add(Users(email.value, username.value, password.value))
+                        userModel.userdata.add(Userdata(id = 0, name = username.value,
+                            secondName = "Kamash", email = "blah@gmail.com",
+                            location = "Benghazi", phone = "0927441569"))
                         nav.navigate(Routes.Login)
                     }
                 )
@@ -122,29 +127,60 @@ fun SignUpInputFields(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
+        Row (modifier = Modifier.fillMaxWidth(1f).padding(16.dp),
+            horizontalArrangement = Arrangement.Start){
+
         OutlinedTextField(
             value = username,
             onValueChange = onUsernameChange,
-            label = { Text(text = "Username", style = TextStyle(
+            label = { Text(text = "AAA", style = TextStyle(
                 fontFamily = customFont,
                 fontStyle = FontStyle.Normal,
                 fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
-                color = Color.Black
+                fontSize = 16.sp
             )) },
             leadingIcon = { Icon(Icons.Default.Person, contentDescription = "Username Icon") },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(0.5f).padding(8.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Color(0xFF1A73E8),
                 unfocusedBorderColor = Color(0xFF7A7A7A),
                 unfocusedLabelColor = Color(0xFF7A7A7A),
                 focusedLabelColor = Color(0xFF1A73E8),
                 unfocusedLeadingIconColor = Color(0xFF7A7A7A),
-                focusedLeadingIconColor = Color(0xFF1A73E8)
+                focusedLeadingIconColor = Color(0xFF1A73E8),
+                focusedTextColor = Color.Black,
+
 
             ),
             shape = MaterialTheme.shapes.medium
         )
+
+            OutlinedTextField(
+                value = username,
+                onValueChange = onUsernameChange,
+                label = { Text(text = "AAAA", style = TextStyle(
+                    fontFamily = customFont,
+                    fontStyle = FontStyle.Normal,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp
+                )) },
+                leadingIcon = { Icon(Icons.Default.Person, contentDescription = "Username Icon") },
+                modifier = Modifier.fillMaxWidth(1f).padding(8.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = Color(0xFF1A73E8),
+                    unfocusedBorderColor = Color(0xFF7A7A7A),
+                    unfocusedLabelColor = Color(0xFF7A7A7A),
+                    focusedLabelColor = Color(0xFF1A73E8),
+                    unfocusedLeadingIconColor = Color(0xFF7A7A7A),
+                    focusedLeadingIconColor = Color(0xFF1A73E8),
+                    focusedTextColor = Color.Black,
+
+
+                    ),
+                shape = MaterialTheme.shapes.medium
+            )
+
+        }
         OutlinedTextField(
             value = email,
             onValueChange = onEmailChange,
@@ -152,8 +188,7 @@ fun SignUpInputFields(
                 fontFamily = customFont,
                 fontStyle = FontStyle.Normal,
                 fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
-                color = Color.Black
+                fontSize = 16.sp
             )) },
             leadingIcon = { Icon(Icons.Default.Email, contentDescription = "Email Icon") },
             modifier = Modifier.fillMaxWidth(),
@@ -164,7 +199,8 @@ fun SignUpInputFields(
                 unfocusedLabelColor = Color(0xFF7A7A7A),
                 focusedLabelColor = Color(0xFF1A73E8),
                 unfocusedLeadingIconColor = Color(0xFF7A7A7A),
-                focusedLeadingIconColor = Color(0xFF1A73E8)
+                focusedLeadingIconColor = Color(0xFF1A73E8),
+                focusedTextColor = Color.Black
 
             ),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
@@ -176,8 +212,7 @@ fun SignUpInputFields(
                 fontFamily = customFont,
                 fontStyle = FontStyle.Normal,
                 fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
-                color = Color.Black
+                fontSize = 16.sp
             )) },
             leadingIcon = { Icon(Icons.Default.Lock, contentDescription = "Password Icon") },
             visualTransformation = PasswordVisualTransformation(),
@@ -189,7 +224,8 @@ fun SignUpInputFields(
                 unfocusedLabelColor = Color(0xFF7A7A7A),
                 focusedLabelColor = Color(0xFF1A73E8),
                 unfocusedLeadingIconColor = Color(0xFF7A7A7A),
-                focusedLeadingIconColor = Color(0xFF1A73E8)
+                focusedLeadingIconColor = Color(0xFF1A73E8),
+                focusedTextColor = Color.Black
 
             ),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
@@ -214,8 +250,7 @@ fun SignUpInputFields(
                 fontFamily = customFont,
                 fontStyle = FontStyle.Normal,
                 fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
-                color = Color.Black
+                fontSize = 16.sp
             )) },
             leadingIcon = { Icon(Icons.Default.Lock, contentDescription = "Confirm Password Icon") },
             modifier = Modifier.fillMaxWidth(),
@@ -226,7 +261,8 @@ fun SignUpInputFields(
                     unfocusedLabelColor = Color.Red,
                     focusedLabelColor = Color.Red,
                     unfocusedLeadingIconColor = Color.Red,
-                    focusedLeadingIconColor = Color.Red
+                    focusedLeadingIconColor = Color.Red,
+                    focusedTextColor = Color.Red
                 )
             } else {
                 OutlinedTextFieldDefaults.colors(
@@ -235,10 +271,12 @@ fun SignUpInputFields(
                     unfocusedLabelColor = Color(0xFF7A7A7A),
                     focusedLabelColor = Color(0xFF1A73E8),
                     unfocusedLeadingIconColor = Color(0xFF7A7A7A),
-                    focusedLeadingIconColor = Color(0xFF1A73E8)
+                    focusedLeadingIconColor = Color(0xFF1A73E8),
+                    focusedTextColor = Color.Black
                 )
             },
-            shape = MaterialTheme.shapes.medium
+            shape = MaterialTheme.shapes.medium,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
         )
 
         if (confirmPasswordError.value) {
@@ -300,11 +338,4 @@ fun AlreadyHaveAccount(nav: NavController) {
 
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun SignUpPagePreview() {
-    val users = mutableListOf<Users>()
-    SignUpPage(nav = rememberNavController(), users = users)
 }
